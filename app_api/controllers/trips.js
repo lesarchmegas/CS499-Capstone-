@@ -71,8 +71,8 @@ const tripsAddTrip = async (req, res, next) => {
     });
 
     try {
-        //error test for enhancement 1 centralized error handling
-        throw new Error("Testing centralized error handler");
+        //error test for enhancement 1 centralized error handling 7/26/26
+        //throw new Error("Testing centralized error handler");
         const q = await newTrip.save();
         return res.status(201).json(q);
     } 
