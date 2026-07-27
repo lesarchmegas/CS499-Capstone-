@@ -6,7 +6,7 @@ require('../models/user');
 const User = mongoose.model('users');
 
 // REGISTER USER
-const register = async (req, res) => {
+const register = async (req, res, next) => {
   if (!req.body.name || !req.body.email || !req.body.password) {
     return res.status(400).json({ message: "All fields required" });
   }
@@ -18,22 +18,28 @@ const register = async (req, res) => {
   user.setPassword(req.body.password);
 
   try {
+
+    //testing this controller as well 7/26/26
+    //throw new Error("Testing centralized authentication error");
+
+
     const savedUser = await user.save();
     const token = savedUser.generateJWT();
 
     return res.status(200).json({ token });
 
-  } catch (err) {
-    return res.status(400).json(err);
+  } 
+  catch (err) {
+    next(err);
   }
 };
 
 // LOGIN USER
-const login = (req, res) => {
+const login = (req, res, next) => {
   passport.authenticate('local', (err, user, info) => {
 
     if (err) {
-      return res.status(404).json(err);
+     return next(err);
     }
 
     if (user) {
